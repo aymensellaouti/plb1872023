@@ -9,6 +9,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
+import { Observable, of } from 'rxjs';
 
 @Controller()
 export class AppController {
@@ -18,9 +19,9 @@ export class AppController {
     return qqueChose;
   } */
   @Get('')
-  getHello(): string {
+  getHello(): Observable<string> {
     console.log('GET');
-    return 'GET';
+    return of('1', '2', '3');
     /* permet de déclencher une erreur 404  */
     throw new NotFoundException('');
   }

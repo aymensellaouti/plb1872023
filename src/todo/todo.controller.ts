@@ -14,55 +14,39 @@ import { TodoModel } from './model/todo.model';
 
 import { Request } from 'express';
 
-import { v4 as uuidv4 } from 'uuid';
+import { UpdateTodoDto } from './dto/update-todo.dto';
+import { AddTodoDto } from './dto/add-todo.dto';
+import { TodoService } from './todo.service';
 @Controller('todo')
 export class TodoController {
-  todos: TodoModel[] = [
-    /*  new TodoModel(uuidv4(), 'lundi', 'entamer la semaine'),
-    new TodoModel(uuidv4(), 'mardi', 'formation NestJs'),
- */
-  ];
+  constructor(private todoService: TodoService) {}
 
   @Get()
   getTodos(): TodoModel[] {
-    return this.todos;
+    return this.todoService.getTodos();
   }
   @Get(':id')
   getTodo(@Param('id') id: string): TodoModel {
-    return this.getTodoById(id);
+    return this.todoService.getTodo(id);
   }
 
   @Post()
   @HttpCode(202)
-  addTodo(@Body() partialTodo: Partial<TodoModel>): TodoModel {
-    const { name, description } = partialTodo;
-    const newTodo = new TodoModel(uuidv4(), name, description);
-    this.todos.push(newTodo);
-    return newTodo;
+  addTodo(@Body() addTodoDto: AddTodoDto): TodoModel {
+    console.log({ addTodoDto });
+
+    console.log(addTodoDto instanceof AddTodoDto);
+
+    return this.todoService.addTodo(addTodoDto);
   }
 
   @Patch(':id')
-  updateTodo(@Body() updatedTodo: Partial<TodoModel>, @Param('id') id: string) {
-    const { name, description, status } = updatedTodo;
-    const todo = this.getTodoById(id);
-    todo.name = name ?? todo.name;
-    todo.description = description ?? todo.description;
-    todo.status = status ?? todo.status;
-    return todo;
+  updateTodo(@Body() updatedTodoDto: UpdateTodoDto, @Param('id') id: string) {
+    return this.todoService.updateTodo(updatedTodoDto, id);
   }
 
   @Delete(':id')
   deleteTodo(@Param('id') id: string) {
-    const todo = this.getTodoById(id);
-    this.todos = this.todos.filter((todo) => todo.id != id);
-    return { count: 1 };
-  }
-
-  private getTodoById(id: string) {
-    const todo = this.todos.find((actualTodo) => actualTodo.id == id);
-    if (!todo) {
-      throw new NotFoundException(`le todo d'id ${id} n'existe pas`);
-    }
-    return todo;
+    return this.todoService.deleteTodo(id);
   }
 }
