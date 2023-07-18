@@ -12,11 +12,11 @@ import {
 
 @Controller()
 export class AppController {
-  @Get(':qqueChose')
+  /*   @Get(':qqueChose')
   getQqeChose(@Param('qqueChose') qqueChose): string {
     console.log(qqueChose);
     return qqueChose;
-  }
+  } */
   @Get('')
   getHello(): string {
     console.log('GET');

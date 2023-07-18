@@ -6,7 +6,7 @@ export enum TodoStatusEnum {
 
 export class TodoModel {
   constructor(
-    public id = 0,
+    public id = '',
     public name = '',
     public description = '',
     public createdAt = new Date(),
