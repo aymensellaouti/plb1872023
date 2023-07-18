@@ -1,15 +1,34 @@
-import { Controller, Delete, Get, Patch, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Put,
+} from '@nestjs/common';
 
 @Controller()
 export class AppController {
+  @Get(':qqueChose')
+  getQqeChose(@Param('qqueChose') qqueChose): string {
+    console.log(qqueChose);
+    return qqueChose;
+  }
   @Get('')
   getHello(): string {
     console.log('GET');
     return 'GET';
+    /* permet de déclencher une erreur 404  */
+    throw new NotFoundException('');
   }
   @Post('')
-  postPostHello(): string {
+  postPostHello(@Body('name') postBody): string {
     console.log('Post');
+    console.log({ postBody });
+
     return 'Post';
   }
   @Put('')
