@@ -8,7 +8,7 @@ export class FirstController {
   @Get()
   first() {
     this.firstService.sayCc();
-    return 'First';
+    return null;
   }
   @Post()
   post(@Body('skills', FusionPipe) skills: string) {

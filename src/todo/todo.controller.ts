@@ -10,6 +10,7 @@ import {
   Patch,
   Post,
   Req,
+  UseFilters,
 } from '@nestjs/common';
 import { TodoModel } from './model/todo.model';
 
@@ -19,6 +20,7 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 import { AddTodoDto } from './dto/add-todo.dto';
 import { TodoService } from './todo.service';
 import { FusionPipe } from '../common/pipe/fusion/fusion.pipe';
+import { CustomFilter } from '../filter/custom/custom.filter';
 @Controller('todo')
 export class TodoController {
   constructor(private todoService: TodoService) {}
@@ -42,6 +44,7 @@ export class TodoController {
   }
 
   @Patch(':id')
+  @UseFilters(CustomFilter)
   updateTodo(
     @Body() updatedTodoDto: UpdateTodoDto,
     @Param('id') id: string,
