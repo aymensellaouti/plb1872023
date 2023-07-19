@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   HttpCode,
@@ -17,16 +18,19 @@ import { Request } from 'express';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { AddTodoDto } from './dto/add-todo.dto';
 import { TodoService } from './todo.service';
+import { FusionPipe } from '../common/pipe/fusion/fusion.pipe';
 @Controller('todo')
 export class TodoController {
   constructor(private todoService: TodoService) {}
 
-  @Get()
+  @Get('all')
   getTodos(): TodoModel[] {
     return this.todoService.getTodos();
   }
-  @Get(':id')
-  getTodo(@Param('id') id: string): TodoModel {
+
+  @Get(':id?')
+  getTodo(@Param('id') id: string = '145'): TodoModel {
+    console.log(id);
     return this.todoService.getTodo(id);
   }
 
