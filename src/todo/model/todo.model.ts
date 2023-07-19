@@ -9,6 +9,7 @@ export class TodoModel {
     public id = '',
     public name = '',
     public description = '',
+    public userId: number,
     public createdAt = new Date(),
     public status: TodoStatusEnum = TodoStatusEnum.waiting,
   ) {}

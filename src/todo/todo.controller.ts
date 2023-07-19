@@ -36,21 +36,26 @@ export class TodoController {
 
   @Post()
   @HttpCode(202)
-  addTodo(@Body() addTodoDto: AddTodoDto): TodoModel {
-    console.log({ addTodoDto });
-
-    console.log(addTodoDto instanceof AddTodoDto);
-
-    return this.todoService.addTodo(addTodoDto);
+  addTodo(@Body() addTodoDto: AddTodoDto, @Req() request: Request): TodoModel {
+    const userId = request['userId'];
+    return this.todoService.addTodo(addTodoDto, userId);
   }
 
   @Patch(':id')
-  updateTodo(@Body() updatedTodoDto: UpdateTodoDto, @Param('id') id: string) {
-    return this.todoService.updateTodo(updatedTodoDto, id);
+  updateTodo(
+    @Body() updatedTodoDto: UpdateTodoDto,
+    @Param('id') id: string,
+    @Req() request: Request,
+  ) {
+    const userId = request['userId'];
+    console.log({ userId });
+
+    return this.todoService.updateTodo(updatedTodoDto, id, userId);
   }
 
   @Delete(':id')
-  deleteTodo(@Param('id') id: string) {
-    return this.todoService.deleteTodo(id);
+  deleteTodo(@Param('id') id: string, @Req() request: Request) {
+    const userId = request['userId'];
+    return this.todoService.deleteTodo(id, userId);
   }
 }
