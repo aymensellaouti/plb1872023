@@ -19,16 +19,28 @@ import { Request } from 'express';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { AddTodoDto } from './dto/add-todo.dto';
 import { TodoService } from './todo.service';
-import { FusionPipe } from '../common/pipe/fusion/fusion.pipe';
-import { CustomFilter } from '../filter/custom/custom.filter';
+import { Todo } from './entity/todo.entity';
 @Controller({
   path: 'todo',
-  version: '1',
+  version: '2',
 })
-export class TodoController {
+export class TodoControllerDb {
   constructor(private todoService: TodoService) {}
 
-  @Get('all')
+  @Post()
+  create(@Body() addTodoDto: AddTodoDto): Promise<Todo> {
+    return this.todoService.addTodo(addTodoDto);
+  }
+
+  @Patch(':id')
+  updateTodo(
+    @Body() updatedTodoDto: UpdateTodoDto,
+    @Param('id') id: string,
+  ): Promise<Todo> {
+    return this.todoService.updateTodo(updatedTodoDto, id);
+  }
+
+  /* @Get('all')
   getTodos(): TodoModel[] {
     return this.todoService.getTodos();
   }
@@ -39,12 +51,7 @@ export class TodoController {
     return this.todoService.getTodo(id);
   }
 
-  @Post()
-  @HttpCode(202)
-  addTodo(@Body() addTodoDto: AddTodoDto, @Req() request: Request): TodoModel {
-    const userId = request['userId'];
-    return this.todoService.addFakeTodo(addTodoDto, userId);
-  }
+
 
   @Patch(':id')
   @UseFilters(CustomFilter)
@@ -56,7 +63,7 @@ export class TodoController {
     const userId = request['userId'];
     console.log({ userId });
 
-    return this.todoService.updateFakeTodo(updatedTodoDto, id, userId);
+    return this.todoService.updateTodo(updatedTodoDto, id, userId);
   }
 
   @Delete(':id')
@@ -64,4 +71,5 @@ export class TodoController {
     const userId = request['userId'];
     return this.todoService.deleteTodo(id, userId);
   }
+} */
 }

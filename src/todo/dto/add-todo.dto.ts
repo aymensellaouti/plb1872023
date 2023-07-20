@@ -1,5 +1,6 @@
 import {
   IsNumber,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -19,5 +20,6 @@ export class AddTodoDto {
 
   @Type(() => Number)
   @IsNumber()
+  @IsOptional()
   priority: number;
 }

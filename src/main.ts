@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { loggerMiddleware } from './common/middleware/logger.middleware';
 import * as morgan from 'morgan';
 import { CustomFilter } from './filter/custom/custom.filter';
@@ -24,7 +24,9 @@ async function bootstrap() {
 
   const configService = app.get(ConfigService);
   console.log({ port: configService.get('port') });
-
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

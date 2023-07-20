@@ -16,6 +16,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { loadConfig } from './config/loader.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FirstEntity } from './first/entity/first.entity';
+import { Todo } from './todo/entity/todo.entity';
 
 @Module({
   imports: [
@@ -35,7 +36,7 @@ import { FirstEntity } from './first/entity/first.entity';
         username: configService.get('db.user'),
         password: configService.get('db.password'),
         database: configService.get('db.name'),
-        entities: [FirstEntity],
+        autoLoadEntities: true,
         synchronize: true,
         logging: true,
       }),
