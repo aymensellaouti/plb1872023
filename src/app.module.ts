@@ -12,9 +12,20 @@ import { CommonModule } from './common/common.module';
 import { FirstMiddleware } from './common/middleware/first/first.middleware';
 import { FirstController } from './first/first.controller';
 import { AuthMiddleware } from './auth/middleware/auth/auth.middleware';
+import { ConfigModule } from '@nestjs/config';
+import { loadConfig } from './config/loader.config';
 
 @Module({
-  imports: [FirstModule, SecondModule, TodoModule, CommonModule],
+  imports: [
+    FirstModule,
+    SecondModule,
+    TodoModule,
+    CommonModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: loadConfig(),
+    }),
+  ],
   controllers: [AppController],
 })
 export class AppModule implements NestModule {

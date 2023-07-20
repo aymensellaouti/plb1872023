@@ -8,6 +8,10 @@ import { FirstInterceptor } from './interceptors/first/first.interceptor';
 import { DurationInterceptor } from './interceptors/duration.interceptor';
 import { ResponseTransformationInterceptor } from './interceptors/response-transformation/response-transformation.interceptor';
 import { NullConvertorInterceptor } from './interceptors/nullConvertor.interceptor';
+
+import * as dotenv from 'dotenv';
+import { ConfigService } from '@nestjs/config';
+
 const corsOptions = {
   origin: ['http://localhost:4201', 'http://localhost:4200'],
   optionsSuccessStatus: 200,
@@ -16,6 +20,11 @@ const corsOptions = {
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   /*   app.useGlobalFilters(new CustomFilter()); */
+  dotenv.config();
+
+  const configService = app.get(ConfigService);
+  console.log({ port: configService.get('port') });
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,
