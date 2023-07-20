@@ -12,8 +12,10 @@ import { CommonModule } from './common/common.module';
 import { FirstMiddleware } from './common/middleware/first/first.middleware';
 import { FirstController } from './first/first.controller';
 import { AuthMiddleware } from './auth/middleware/auth/auth.middleware';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { loadConfig } from './config/loader.config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { FirstEntity } from './first/entity/first.entity';
 
 @Module({
   imports: [
@@ -24,6 +26,20 @@ import { loadConfig } from './config/loader.config';
     ConfigModule.forRoot({
       isGlobal: true,
       load: loadConfig(),
+    }),
+    TypeOrmModule.forRootAsync({
+      useFactory: (configService: ConfigService) => ({
+        type: 'mysql',
+        host: configService.get('db.host'),
+        port: +configService.get('db.port'),
+        username: configService.get('db.user'),
+        password: configService.get('db.password'),
+        database: configService.get('db.name'),
+        entities: [FirstEntity],
+        synchronize: true,
+        logging: true,
+      }),
+      inject: [ConfigService],
     }),
   ],
   controllers: [AppController],
