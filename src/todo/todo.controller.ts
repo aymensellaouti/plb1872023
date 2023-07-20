@@ -30,13 +30,13 @@ export class TodoController {
 
   @Get('all')
   getTodos(): TodoModel[] {
-    return this.todoService.getTodos();
+    return this.todoService.getFakeTodos();
   }
 
   @Get(':id?')
   getTodo(@Param('id') id: string = '145'): TodoModel {
     console.log(id);
-    return this.todoService.getTodo(id);
+    return this.todoService.getFakeTodo(id);
   }
 
   @Post()
@@ -62,6 +62,6 @@ export class TodoController {
   @Delete(':id')
   deleteTodo(@Param('id') id: string, @Req() request: Request) {
     const userId = request['userId'];
-    return this.todoService.deleteTodo(id, userId);
+    return this.todoService.deleteFakeTodo(id, userId);
   }
 }
