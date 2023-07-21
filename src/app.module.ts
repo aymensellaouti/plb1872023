@@ -18,6 +18,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FirstEntity } from './first/entity/first.entity';
 import { Todo } from './todo/entity/todo.entity';
 import { SkillModule } from './skill/skill.module';
+import { CvModule } from './cv/cv.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -44,6 +46,8 @@ import { SkillModule } from './skill/skill.module';
       inject: [ConfigService],
     }),
     SkillModule,
+    CvModule,
+    UserModule,
   ],
   controllers: [AppController],
 })
