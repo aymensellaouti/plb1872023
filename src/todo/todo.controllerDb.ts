@@ -23,6 +23,7 @@ import { TodoService } from './todo.service';
 import { Todo } from './entity/todo.entity';
 import { UpdateResult } from 'typeorm';
 import { SearchDto } from './dto/search.dto';
+import { DateIntervalDto } from '../common/dto/date-interval.dto';
 @Controller({
   path: 'todo',
   version: '2',
@@ -37,6 +38,10 @@ export class TodoControllerDb {
   @Get('qb')
   getQbTodos(@Query() searchCriteria: SearchDto): Promise<Todo[]> {
     return this.todoService.getQbTodos(searchCriteria);
+  }
+  @Get('stats')
+  getStatsTodos(@Query() dateIntervalDto: DateIntervalDto) {
+    return this.todoService.getStats(dateIntervalDto);
   }
   @Get(':id')
   getTodo(@Param('id') id: string): Promise<Todo> {

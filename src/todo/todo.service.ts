@@ -14,6 +14,9 @@ import { Brackets, ILike, Repository, UpdateResult } from 'typeorm';
 import { Todo } from './entity/todo.entity';
 import { SearchDto } from './dto/search.dto';
 import { withName } from '../common/database/withname.db';
+import { paginate } from '../common/database/paginate.db';
+import { DateIntervalDto } from '../common/dto/date-interval.dto';
+import { addDateInterval } from '../common/database/date-interval.db';
 
 @Injectable()
 export class TodoService {
@@ -39,8 +42,13 @@ export class TodoService {
 
   getQbTodos(searchCriteria: SearchDto) {
     const qb = this.todoRepository.createQueryBuilder('t');
-    const { status, criteria } = searchCriteria;
+    const { status, criteria, nb, page } = searchCriteria;
     /*     withName(qb, 'mercredi'); */
+
+    if (nb) {
+      paginate<Todo>(qb, page, nb);
+    }
+
     if (status) {
       qb.where('t.status = :status', { status });
     }
@@ -55,6 +63,16 @@ export class TodoService {
       );
     }
     return qb.getMany();
+  }
+
+  getStats(dateIntervalDto: DateIntervalDto) {
+    const { dateMin, dateMax } = dateIntervalDto;
+    const qb = this.todoRepository.createQueryBuilder('t');
+    addDateInterval<Todo>(qb, 'created_at', dateMin, dateMax);
+    return qb
+      .select('t.status, count(t.id) as number')
+      .groupBy('t.status')
+      .getRawMany();
   }
 
   async getTodo(id: string): Promise<Todo> {

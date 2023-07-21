@@ -17,6 +17,7 @@ import { loadConfig } from './config/loader.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { FirstEntity } from './first/entity/first.entity';
 import { Todo } from './todo/entity/todo.entity';
+import { SkillModule } from './skill/skill.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { Todo } from './todo/entity/todo.entity';
       }),
       inject: [ConfigService],
     }),
+    SkillModule,
   ],
   controllers: [AppController],
 })
