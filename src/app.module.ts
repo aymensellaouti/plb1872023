@@ -20,6 +20,7 @@ import { Todo } from './todo/entity/todo.entity';
 import { SkillModule } from './skill/skill.module';
 import { CvModule } from './cv/cv.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -48,6 +49,7 @@ import { UserModule } from './user/user.module';
     SkillModule,
     CvModule,
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
 })
