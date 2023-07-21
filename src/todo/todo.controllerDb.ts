@@ -35,8 +35,8 @@ export class TodoControllerDb {
     return this.todoService.getTodos(searchCriteria);
   }
   @Get('qb')
-  getQbTodos() /* : Promise<Todo[]> */ {
-    this.todoService.getQbTodos();
+  getQbTodos(@Query() searchCriteria: SearchDto): Promise<Todo[]> {
+    return this.todoService.getQbTodos(searchCriteria);
   }
   @Get(':id')
   getTodo(@Param('id') id: string): Promise<Todo> {

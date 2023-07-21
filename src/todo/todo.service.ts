@@ -10,7 +10,7 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 import { TodoModel } from './model/todo.model';
 import { INJECT_TOKENS } from '../common/config/constantes';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ILike, Repository, UpdateResult } from 'typeorm';
+import { Brackets, ILike, Repository, UpdateResult } from 'typeorm';
 import { Todo } from './entity/todo.entity';
 import { SearchDto } from './dto/search.dto';
 import { withName } from '../common/database/withname.db';
@@ -37,10 +37,24 @@ export class TodoService {
     return this.todoRepository.find({ where: criterias });
   }
 
-  getQbTodos() {
+  getQbTodos(searchCriteria: SearchDto) {
     const qb = this.todoRepository.createQueryBuilder('t');
-    withName(qb, 'mercredi');
-    return qb;
+    const { status, criteria } = searchCriteria;
+    /*     withName(qb, 'mercredi'); */
+    if (status) {
+      qb.where('t.status = :status', { status });
+    }
+    if (criteria) {
+      qb.andWhere(
+        new Brackets((qb) => {
+          qb.where(`t.name like :name`, { name: `%${criteria}%` }).orWhere(
+            `t.name like :description`,
+            { description: `%${criteria}%` },
+          );
+        }),
+      );
+    }
+    return qb.getMany();
   }
 
   async getTodo(id: string): Promise<Todo> {
